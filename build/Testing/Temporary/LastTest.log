@@ -1,0 +1,393 @@
+Start testing: Sep 27 23:56 CST
+----------------------------------------------------------
+1/169 Testing: t_wrapping_ints_cmp
+1/169 Test: t_wrapping_ints_cmp
+Command: "/home/Sakana/mydoc/cs144/sponge/build/tests/wrapping_integers_cmp"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_wrapping_ints_cmp" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"t_wrapping_ints_cmp" end time: Sep 27 23:56 CST
+"t_wrapping_ints_cmp" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/169 Testing: t_wrapping_ints_unwrap
+2/169 Test: t_wrapping_ints_unwrap
+Command: "/home/Sakana/mydoc/cs144/sponge/build/tests/wrapping_integers_unwrap"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_wrapping_ints_unwrap" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"t_wrapping_ints_unwrap" end time: Sep 27 23:56 CST
+"t_wrapping_ints_unwrap" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/169 Testing: t_wrapping_ints_wrap
+3/169 Test: t_wrapping_ints_wrap
+Command: "/home/Sakana/mydoc/cs144/sponge/build/tests/wrapping_integers_wrap"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_wrapping_ints_wrap" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"t_wrapping_ints_wrap" end time: Sep 27 23:56 CST
+"t_wrapping_ints_wrap" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/169 Testing: t_wrapping_ints_roundtrip
+4/169 Test: t_wrapping_ints_roundtrip
+Command: "/home/Sakana/mydoc/cs144/sponge/build/tests/wrapping_integers_roundtrip"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_wrapping_ints_roundtrip" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.17 sec
+----------------------------------------------------------
+Test Passed.
+"t_wrapping_ints_roundtrip" end time: Sep 27 23:56 CST
+"t_wrapping_ints_roundtrip" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/169 Testing: t_recv_connect
+5/169 Test: t_recv_connect
+Command: "/home/Sakana/mydoc/cs144/sponge/build/tests/recv_connect"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_recv_connect" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"t_recv_connect" end time: Sep 27 23:56 CST
+"t_recv_connect" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/169 Testing: t_recv_transmit
+6/169 Test: t_recv_transmit
+Command: "/home/Sakana/mydoc/cs144/sponge/build/tests/recv_transmit"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_recv_transmit" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Passed.
+"t_recv_transmit" end time: Sep 27 23:56 CST
+"t_recv_transmit" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/169 Testing: t_recv_window
+7/169 Test: t_recv_window
+Command: "/home/Sakana/mydoc/cs144/sponge/build/tests/recv_window"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_recv_window" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"t_recv_window" end time: Sep 27 23:56 CST
+"t_recv_window" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/169 Testing: t_recv_reorder
+8/169 Test: t_recv_reorder
+Command: "/home/Sakana/mydoc/cs144/sponge/build/tests/recv_reorder"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_recv_reorder" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"t_recv_reorder" end time: Sep 27 23:56 CST
+"t_recv_reorder" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/169 Testing: t_recv_close
+9/169 Test: t_recv_close
+Command: "/home/Sakana/mydoc/cs144/sponge/build/tests/recv_close"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_recv_close" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"t_recv_close" end time: Sep 27 23:56 CST
+"t_recv_close" time elapsed: 00:00:00
+----------------------------------------------------------
+
+10/169 Testing: t_recv_special
+10/169 Test: t_recv_special
+Command: "/home/Sakana/mydoc/cs144/sponge/build/tests/recv_special"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_recv_special" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"t_recv_special" end time: Sep 27 23:56 CST
+"t_recv_special" time elapsed: 00:00:00
+----------------------------------------------------------
+
+18/169 Testing: t_strm_reassem_single
+18/169 Test: t_strm_reassem_single
+Command: "/home/Sakana/mydoc/cs144/sponge/build/tests/fsm_stream_reassembler_single"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_strm_reassem_single" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"t_strm_reassem_single" end time: Sep 27 23:56 CST
+"t_strm_reassem_single" time elapsed: 00:00:00
+----------------------------------------------------------
+
+19/169 Testing: t_strm_reassem_seq
+19/169 Test: t_strm_reassem_seq
+Command: "/home/Sakana/mydoc/cs144/sponge/build/tests/fsm_stream_reassembler_seq"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_strm_reassem_seq" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"t_strm_reassem_seq" end time: Sep 27 23:56 CST
+"t_strm_reassem_seq" time elapsed: 00:00:00
+----------------------------------------------------------
+
+20/169 Testing: t_strm_reassem_dup
+20/169 Test: t_strm_reassem_dup
+Command: "/home/Sakana/mydoc/cs144/sponge/build/tests/fsm_stream_reassembler_dup"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_strm_reassem_dup" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"t_strm_reassem_dup" end time: Sep 27 23:56 CST
+"t_strm_reassem_dup" time elapsed: 00:00:00
+----------------------------------------------------------
+
+21/169 Testing: t_strm_reassem_holes
+21/169 Test: t_strm_reassem_holes
+Command: "/home/Sakana/mydoc/cs144/sponge/build/tests/fsm_stream_reassembler_holes"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_strm_reassem_holes" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"t_strm_reassem_holes" end time: Sep 27 23:56 CST
+"t_strm_reassem_holes" time elapsed: 00:00:00
+----------------------------------------------------------
+
+22/169 Testing: t_strm_reassem_many
+22/169 Test: t_strm_reassem_many
+Command: "/home/Sakana/mydoc/cs144/sponge/build/tests/fsm_stream_reassembler_many"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_strm_reassem_many" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.62 sec
+----------------------------------------------------------
+Test Passed.
+"t_strm_reassem_many" end time: Sep 27 23:56 CST
+"t_strm_reassem_many" time elapsed: 00:00:00
+----------------------------------------------------------
+
+23/169 Testing: t_strm_reassem_overlapping
+23/169 Test: t_strm_reassem_overlapping
+Command: "/home/Sakana/mydoc/cs144/sponge/build/tests/fsm_stream_reassembler_overlapping"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_strm_reassem_overlapping" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"t_strm_reassem_overlapping" end time: Sep 27 23:56 CST
+"t_strm_reassem_overlapping" time elapsed: 00:00:00
+----------------------------------------------------------
+
+24/169 Testing: t_strm_reassem_win
+24/169 Test: t_strm_reassem_win
+Command: "/home/Sakana/mydoc/cs144/sponge/build/tests/fsm_stream_reassembler_win"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_strm_reassem_win" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.67 sec
+----------------------------------------------------------
+Test Passed.
+"t_strm_reassem_win" end time: Sep 27 23:56 CST
+"t_strm_reassem_win" time elapsed: 00:00:00
+----------------------------------------------------------
+
+25/169 Testing: t_strm_reassem_cap
+25/169 Test: t_strm_reassem_cap
+Command: "/home/Sakana/mydoc/cs144/sponge/build/tests/fsm_stream_reassembler_cap"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_strm_reassem_cap" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.10 sec
+----------------------------------------------------------
+Test Passed.
+"t_strm_reassem_cap" end time: Sep 27 23:56 CST
+"t_strm_reassem_cap" time elapsed: 00:00:00
+----------------------------------------------------------
+
+26/169 Testing: t_byte_stream_construction
+26/169 Test: t_byte_stream_construction
+Command: "/home/Sakana/mydoc/cs144/sponge/build/tests/byte_stream_construction"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_byte_stream_construction" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"t_byte_stream_construction" end time: Sep 27 23:56 CST
+"t_byte_stream_construction" time elapsed: 00:00:00
+----------------------------------------------------------
+
+27/169 Testing: t_byte_stream_one_write
+27/169 Test: t_byte_stream_one_write
+Command: "/home/Sakana/mydoc/cs144/sponge/build/tests/byte_stream_one_write"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_byte_stream_one_write" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"t_byte_stream_one_write" end time: Sep 27 23:56 CST
+"t_byte_stream_one_write" time elapsed: 00:00:00
+----------------------------------------------------------
+
+28/169 Testing: t_byte_stream_two_writes
+28/169 Test: t_byte_stream_two_writes
+Command: "/home/Sakana/mydoc/cs144/sponge/build/tests/byte_stream_two_writes"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_byte_stream_two_writes" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"t_byte_stream_two_writes" end time: Sep 27 23:56 CST
+"t_byte_stream_two_writes" time elapsed: 00:00:00
+----------------------------------------------------------
+
+29/169 Testing: t_byte_stream_capacity
+29/169 Test: t_byte_stream_capacity
+Command: "/home/Sakana/mydoc/cs144/sponge/build/tests/byte_stream_capacity"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_byte_stream_capacity" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.54 sec
+----------------------------------------------------------
+Test Passed.
+"t_byte_stream_capacity" end time: Sep 27 23:56 CST
+"t_byte_stream_capacity" time elapsed: 00:00:00
+----------------------------------------------------------
+
+30/169 Testing: t_byte_stream_many_writes
+30/169 Test: t_byte_stream_many_writes
+Command: "/home/Sakana/mydoc/cs144/sponge/build/tests/byte_stream_many_writes"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_byte_stream_many_writes" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"t_byte_stream_many_writes" end time: Sep 27 23:56 CST
+"t_byte_stream_many_writes" time elapsed: 00:00:00
+----------------------------------------------------------
+
+53/169 Testing: t_address_dt
+53/169 Test: t_address_dt
+Command: "/home/Sakana/mydoc/cs144/sponge/build/doctests/address_dt"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_address_dt" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"t_address_dt" end time: Sep 27 23:56 CST
+"t_address_dt" time elapsed: 00:00:00
+----------------------------------------------------------
+
+54/169 Testing: t_parser_dt
+54/169 Test: t_parser_dt
+Command: "/home/Sakana/mydoc/cs144/sponge/build/doctests/parser_dt"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_parser_dt" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"t_parser_dt" end time: Sep 27 23:56 CST
+"t_parser_dt" time elapsed: 00:00:00
+----------------------------------------------------------
+
+55/169 Testing: t_socket_dt
+55/169 Test: t_socket_dt
+Command: "/home/Sakana/mydoc/cs144/sponge/build/doctests/socket_dt"
+Directory: /home/Sakana/mydoc/cs144/sponge/build
+"t_socket_dt" start time: Sep 27 23:56 CST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"t_socket_dt" end time: Sep 27 23:56 CST
+"t_socket_dt" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Sep 27 23:56 CST
