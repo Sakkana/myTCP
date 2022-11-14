@@ -27,31 +27,29 @@ void TCPReceiver::segment_received(const TCPSegment &seg) {
     }
 #endif
 
-    // 如果没有建立过连接, 那就建立连接
+    // 如果没有建立过连接, 那么这个报文可能是 syn 报文
     if (!this->SYN) {
+        // 如果接收到的报文没有携带 syn
         if (!seg_header.syn) {
             return;
         }
+
+        // 若携带了 syn, 正式建立连接
         this->SYN = true;
         this->ISN = seg_header.seqno;
     }
-    
 
     // 期望报文本地序列号
     uint64_t checkpoint = this->_reassembler.stream_out().bytes_written() + 1;
 
     // 网络报文本地序列号
-    // cout << seg_header.seqno << "   " << this->ISN << "   " << checkpoint << "===" << endl ;
     uint64_t seqno_64 = unwrap(seg_header.seqno, this->ISN, checkpoint);
-
-    // out << "checkpoint   " << checkpoint << endl;
-    // cout << "seqno32: " << seg_header.seqno << "   seqno64: " << seqno_64 << endl;
 
     // Push any data, or end-of-stream marker, to the StreamReassembler
 
     // 如果是初次连接, 在字节流中数据是从 0 开始的
     // 如果是后续的数据传输, 在字节流中该段是从 seqno 开始的
-    // 但是由于 syn 页占据了发送方 index 中的一个序号, 因此实际上数据是从 seqno = 1 开始的
+    // 但是由于 syn 也占据了发送方 index 中的一个序号, 因此实际上数据是从 seqno = 1 开始的
     // 因此后续需要往字节流中写入 seqno - 1
 
     // bug 传进去的 index 不对 ---> SYN 那里的条件判断写错了，导致 ISN 被修改了
