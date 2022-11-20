@@ -16,6 +16,7 @@
 #include <sstream>
 #include <string>
 
+
 const unsigned int DEFAULT_TEST_WINDOW = 137;
 
 struct SenderTestStep {
@@ -90,6 +91,12 @@ struct ExpectBytesInFlight : public SenderExpectation {
     std::string description() const { return std::to_string(_n_bytes) + " bytes in flight"; }
 
     void execute(TCPSender &sender, std::queue<TCPSegment> &) const {
+        // if (LOG_OPEN == true) {
+        //         cout << endl;
+        //         std::cout << "_recent_seqno: " << sender.Get_recent_ack() << endl;
+        //         std::cout << "_next_seqno: " << sender.Get_next_seqno() << endl; 
+        //         cout << endl;
+        //     }
         if (sender.bytes_in_flight() != _n_bytes) {
             std::ostringstream ss;
             ss << "The TCPSender reported " << sender.bytes_in_flight()
@@ -205,7 +212,9 @@ struct AckReceived : public SenderAction {
     }
 
     void execute(TCPSender &sender, std::queue<TCPSegment> &) const {
+        // cout << "@@@ fill_window before @@@" << endl;
         sender.ack_received(_ackno, _window_advertisement.value_or(DEFAULT_TEST_WINDOW));
+        // cout << "@@@ fill_window start @@@" << endl;
         sender.fill_window();
     }
 };

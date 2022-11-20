@@ -17,6 +17,8 @@ int main() {
         auto rd = get_random_generator();
 
         {
+            cout << "\033[33m" << "=== Test 1 ===" << "\033[0m" << endl;
+
             TCPConfig cfg;
             WrappingInt32 isn(rd());
             cfg.fixed_isn = isn;
@@ -31,8 +33,11 @@ int main() {
             test.execute(ExpectSegment{}.with_fin(true).with_seqno(isn + 1));
             test.execute(ExpectNoSegment{});
         }
+        cout << "\033[33m" << "=== Test 1 OK ===" << "\033[0m" << endl;
 
         {
+            cout << "\033[33m" << "=== Test 2 ===" << "\033[0m" << endl;
+
             TCPConfig cfg;
             WrappingInt32 isn(rd());
             cfg.fixed_isn = isn;
@@ -49,8 +54,11 @@ int main() {
             test.execute(ExpectBytesInFlight{0});
             test.execute(ExpectNoSegment{});
         }
+        cout << "\033[33m" << "=== Test 2 OK ===" << "\033[0m" << endl;
 
         {
+            cout << "\033[33m" << "=== Test 3 ===" << "\033[0m" << endl;
+
             TCPConfig cfg;
             WrappingInt32 isn(rd());
             cfg.fixed_isn = isn;
@@ -67,8 +75,11 @@ int main() {
             test.execute(ExpectBytesInFlight{1});
             test.execute(ExpectNoSegment{});
         }
+        cout << "\033[33m" << "=== Test 3 OK ===" << "\033[0m" << endl;
 
         {
+            cout << "\033[33m" << "=== Test 4 ===" << "\033[0m" << endl;
+
             TCPConfig cfg;
             WrappingInt32 isn(rd());
             cfg.fixed_isn = isn;
@@ -102,6 +113,7 @@ int main() {
             test.execute(ExpectBytesInFlight{0});
             test.execute(ExpectNoSegment{});
         }
+        cout << "\033[33m" << "=== Test 4 OK ===" << "\033[0m" << endl;
 
     } catch (const exception &e) {
         cerr << e.what() << endl;
