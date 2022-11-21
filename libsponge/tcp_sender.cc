@@ -51,8 +51,6 @@ void TCPSender::fill_window() {
             if (!stream_in().buffer_empty()) {
                 tcpSegment.payload() = stream_in().read(payload_length);
                 payload_length -= static_cast<int64_t>(tcpSegment.length_in_sequence_space());
-            } else if (stream_in().eof() == false){
-                return;
             }
             
             if (stream_in().eof()
