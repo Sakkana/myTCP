@@ -26,6 +26,8 @@ int main() {
 
         // single segment re-transmit
         {
+            TEST(1);
+
             WrappingInt32 tx_ackno(rd());
             TCPTestHarness test_1 = TCPTestHarness::in_established(cfg, tx_ackno - 1, tx_ackno - 1);
 
@@ -44,18 +46,28 @@ int main() {
             test_1.execute(Tick(10 * cfg.rt_timeout + 100));
             check_segment(test_1, data, false, __LINE__);
 
+            OK(1);
+
             for (unsigned i = 2; i < TCPConfig::MAX_RETX_ATTEMPTS; ++i) {
+                TEST(i);
+
                 test_1.execute(Tick((cfg.rt_timeout << i) - i));  // exponentially increasing delay length
                 test_1.execute(ExpectNoSegment{}, "test 1 failed: re-tx too fast after timeout");
                 test_1.execute(Tick(i));
                 check_segment(test_1, data, false, __LINE__);
+
+                OK(i);
             }
+
+            TEST("RESULT");
 
             test_1.execute(ExpectState{State::ESTABLISHED});
 
             test_1.execute(Tick(1 + (cfg.rt_timeout << TCPConfig::MAX_RETX_ATTEMPTS)));
             test_1.execute(ExpectState{State::RESET});
             test_1.execute(ExpectOneSegment{}.with_rst(true), "test 1 failed: RST on re-tx failure was malformed");
+        
+            OK("RESULT");
         }
     } catch (const exception &e) {
         cerr << e.what() << endl;

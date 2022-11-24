@@ -18,6 +18,8 @@ int main() {
 
         // multiple segments with intervening ack
         {
+            TEST(1);
+
             WrappingInt32 tx_ackno(rd());
             TCPTestHarness test_2 = TCPTestHarness::in_established(cfg, tx_ackno - 1, tx_ackno - 1);
 
@@ -48,10 +50,14 @@ int main() {
             test_2.execute(ExpectNoSegment{}, "test 2 failed: re-tx of 2nd seg after ack for 1st seg too fast");
             test_2.execute(Tick(3));
             check_segment(test_2, d2, false, __LINE__);
+
+            OK(1);
         }
 
         // multiple segments without intervening ack
         {
+            TEST(2);
+
             WrappingInt32 tx_ackno(rd());
             TCPTestHarness test_3 = TCPTestHarness::in_established(cfg, tx_ackno - 1, tx_ackno - 1);
 
@@ -78,6 +84,8 @@ int main() {
 
             test_3.execute(Tick(3));
             check_segment(test_3, d1, false, __LINE__);
+
+            OK(2);
         }
 
         // check that ACK of new data resets exponential backoff and restarts timer
@@ -119,9 +127,13 @@ int main() {
             check_segment(test_4, d2, false, __LINE__);
         };
 
+        TEST("LOOP");
         for (unsigned int i = 0; i < TCPConfig::MAX_RETX_ATTEMPTS; ++i) {
+            TEST(i + 1);
             backoff_test(i);
+            OK(i + 1);
         }
+        OK("LOOP");
     } catch (const exception &e) {
         cerr << e.what() << endl;
         return 1;

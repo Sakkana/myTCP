@@ -19,6 +19,8 @@ int main() {
 
         // test #1: start in LAST_ACK, ack
         {
+            TEST(1);
+
             TCPTestHarness test_1 = TCPTestHarness::in_last_ack(cfg);
 
             test_1.execute(Tick(4 * cfg.rt_timeout));
@@ -26,25 +28,33 @@ int main() {
             test_1.execute(ExpectState{State::LAST_ACK});
 
             test_1.send_ack(WrappingInt32{2}, WrappingInt32{2});
+            
             test_1.execute(Tick(1));
 
             test_1.execute(ExpectState{State::CLOSED});
+
+            OK(1);
         }
 
         // test #2: start in CLOSE_WAIT, close(), throw away first FIN, ack re-tx FIN
         {
+            TEST(2);
+
             TCPTestHarness test_2 = TCPTestHarness::in_close_wait(cfg);
 
             test_2.execute(Tick(4 * cfg.rt_timeout));
 
             test_2.execute(ExpectState{State::CLOSE_WAIT});
 
+            TCP_LOG("第三次挥手");
             test_2.execute(Close{});
             test_2.execute(Tick(1));
 
             test_2.execute(ExpectState{State::LAST_ACK});
 
-            TCPSegment seg1 = test_2.expect_seg(ExpectOneSegment{}.with_fin(true), "test 2 falied: bad seg or no FIN");
+            TCPSegment seg1 = test_2.expect_seg(ExpectOneSegment{}
+                                                .with_fin(true)
+                                                , "test 2 falied: bad seg or no FIN");
 
             test_2.execute(Tick(cfg.rt_timeout - 2));
 
@@ -52,24 +62,35 @@ int main() {
 
             test_2.execute(Tick(2));
 
-            TCPSegment seg2 = test_2.expect_seg(ExpectOneSegment{}.with_fin(true).with_seqno(seg1.header().seqno),
-                                                "test 2 failed: bad re-tx FIN");
+            TCP_LOG("超时重传第三次握手的 local fin");
+            TCPSegment seg2 = test_2.expect_seg(ExpectOneSegment{}
+                                                .with_fin(true)
+                                                .with_seqno(seg1.header().seqno)
+                                                , "test 2 failed: bad re-tx FIN");
 
+            TCP_LOG("第四次挥手");
             const WrappingInt32 rx_seqno{2};
             const auto ack_expect = rx_seqno;
+
+            // 错误 ack
             test_2.send_ack(ack_expect, seg2.header().seqno - 1);  // wrong ackno!
             test_2.execute(Tick(1));
 
             test_2.execute(ExpectState{State::LAST_ACK});
 
+            // 正确 ack
             test_2.send_ack(ack_expect, seg2.header().seqno + 1);
             test_2.execute(Tick(1));
 
             test_2.execute(ExpectState{State::CLOSED});
+
+            OK(2);
         }
 
         // test #3: start in ESTABLSHED, send FIN, recv ACK, check for CLOSE_WAIT
         {
+            TEST(3);
+
             TCPTestHarness test_3 = TCPTestHarness::in_established(cfg);
 
             test_3.execute(Tick(4 * cfg.rt_timeout));
@@ -106,6 +127,8 @@ int main() {
             test_3.execute(Tick(1));
 
             test_3.execute(ExpectState{State::CLOSED});
+
+            OK(4);
         }
     } catch (const exception &e) {
         cerr << e.what() << endl;

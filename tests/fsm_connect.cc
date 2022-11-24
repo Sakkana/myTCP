@@ -25,9 +25,12 @@ int main() {
         //
         // test #1: START -> SYN_SENT -> ACK (ignored) -> SYN -> SYN_RECV
         {
+            TEST(1);
+
             TCPTestHarness test_1(cfg);
 
             // tell the FSM to connect, make sure we get a SYN
+            // 1. 建立连接，发送 ack
             test_1.execute(Connect{});
             test_1.execute(Tick(1));
             TCPSegment seg1 = test_1.expect_seg(ExpectOneSegment{}.with_syn(true).with_ack(false),
@@ -49,10 +52,14 @@ int main() {
             test_1.execute(ExpectOneSegment{}.with_ack(true).with_syn(false).with_ackno(isn + 1));
 
             test_1.execute(ExpectBytesInFlight{1UL});
+
+            OK(1);
         }
 
         // test #2: START -> SYN_SENT -> SYN -> ACK -> ESTABLISHED
         {
+            TEST(2);
+
             TCPTestHarness test_2(cfg);
 
             test_2.execute(Connect{});
@@ -79,10 +86,14 @@ int main() {
             test_2.execute(Tick(1));
             test_2.execute(ExpectNoSegment{}, "test 2 failed: got spurious ACK after ACKing SYN");
             test_2.execute(ExpectState{State::ESTABLISHED});
+
+            OK(2);
         }
 
         // test #3: START -> SYN_SENT -> SYN/ACK -> ESTABLISHED
         {
+            TEST(1);
+
             TCPTestHarness test_3(cfg);
 
             test_3.execute(Connect{});
@@ -103,6 +114,8 @@ int main() {
                            "test 3 failed: bad ACK for SYN");
 
             test_3.execute(ExpectState{State::ESTABLISHED});
+
+            OK(3);
         }
     } catch (const exception &e) {
         cerr << e.what() << endl;

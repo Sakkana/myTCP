@@ -14,6 +14,7 @@
 //! \brief A reference-counted read-only string that can discard bytes from the front
 class Buffer {
   private:
+    // 真正存储数据的缓冲区指针
     std::shared_ptr<std::string> _storage{};
     size_t _starting_offset{};
 
@@ -25,10 +26,14 @@ class Buffer {
 
     //! \name Expose contents as a std::string_view
     //!@{
+    // C++17 特性，read-only 字符串视图
     std::string_view str() const {
+        // 数据为空
         if (not _storage) {
             return {};
         }
+
+        // 数据非空
         return {_storage->data() + _starting_offset, _storage->size() - _starting_offset};
     }
 

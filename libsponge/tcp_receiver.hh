@@ -33,7 +33,8 @@ class TCPReceiver {
     WrappingInt32 ISN;
 
     //! SYN
-    bool SYN;
+    bool SYN{false};
+    bool FIN{false};
 
   public:
     //! \brief Construct a TCP receiver
@@ -41,7 +42,7 @@ class TCPReceiver {
     //! \param capacity the maximum number of bytes that the receiver will
     //!                 store in its buffers at any give time.
     TCPReceiver(const size_t capacity) : _reassembler(capacity), _capacity(capacity),
-                                        ISN(WrappingInt32{0}), SYN(0) {}
+                                        ISN(WrappingInt32{0})  {}
 
     //! \name Accessors to provide feedback to the remote TCPSender
     //!@{

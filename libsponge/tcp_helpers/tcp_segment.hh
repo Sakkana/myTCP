@@ -14,9 +14,11 @@ class TCPSegment {
 
   public:
     //! \brief Parse the segment from a string
+    // 将一个 string 解析为报文段
     ParseResult parse(const Buffer buffer, const uint32_t datagram_layer_checksum = 0);
 
     //! \brief Serialize the segment to a string
+    // 将一个报文段序列化为一个 string
     BufferList serialize(const uint32_t datagram_layer_checksum = 0) const;
 
     //! \name Accessors

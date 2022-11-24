@@ -43,8 +43,9 @@ void TCPSender::fill_window() {
             tcpSegment.header().syn = true;
             _SYN_is_sent = true;
             payload_length -= 1;
+            // cerr << "SYN send" << endl;
         } else {
-            if (!stream_in().buffer_size() && !stream_in().eof()) {
+            if (stream_in().buffer_empty() && !stream_in().eof()) {
                 return;
             }
 
@@ -61,8 +62,12 @@ void TCPSender::fill_window() {
                 payload_length -= 1;
                 _FIN_is_sent = true;
 
+                // cout << "end_input" << endl;
             }
+            // cout << "payload left: " << payload_length << endl;
         }
+
+        // cout << "fill window succeed" << endl;
 
         tcpSegment.header().seqno = next_seqno();
         _next_seqno += tcpSegment.length_in_sequence_space();
@@ -81,6 +86,8 @@ void TCPSender::fill_window() {
 //! \param window_size The remote receiver's advertised window size
 
 void TCPSender::ack_received(const WrappingInt32 ackno, const uint16_t window_size) { 
+
+    // cerr << "ACK received" << endl;
 
     _receiver_window_size = (window_size == 0) ?  1 :  window_size;
     _no_window = (window_size == 0) ? true : false;
@@ -103,6 +110,8 @@ void TCPSender::ack_received(const WrappingInt32 ackno, const uint16_t window_si
             break;
         }
     }
+
+    fill_window();
 
     // --- 定时器 --- 
 

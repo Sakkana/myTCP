@@ -77,7 +77,10 @@ void TCPTestHarness::send_fin(const WrappingInt32 seqno, const optional<Wrapping
     if (ackno.has_value()) {
         step.with_ack(true).with_ackno(ackno.value());
     }
-    step.with_fin(true).with_seqno(seqno).with_win(DEFAULT_TEST_WINDOW);
+    step.with_fin(true)
+        .with_seqno(seqno)
+        .with_win(DEFAULT_TEST_WINDOW);
+    TCP_LOG("remote send fin");
     execute(step);
 }
 
@@ -109,8 +112,10 @@ void TCPTestHarness::send_syn(const WrappingInt32 seqno, const optional<Wrapping
     SendSegment step{};
     if (ackno.has_value()) {
         step.with_ack(true).with_ackno(ackno.value());
+        cout << "send syn: with no ack ";
     }
     step.with_syn(true).with_seqno(seqno).with_win(DEFAULT_TEST_WINDOW);
+    cout << "syn send" << endl;
     execute(step);
 }
 
@@ -198,8 +203,14 @@ TCPTestHarness TCPTestHarness::in_syn_sent(const TCPConfig &cfg, const WrappingI
     TCPConfig c{cfg};
     c.fixed_isn = tx_isn;
     TCPTestHarness h{c};
+
     h.execute(Connect{});
-    h.execute(ExpectOneSegment{}.with_no_flags().with_syn(true).with_seqno(tx_isn).with_payload_size(0));
+    h.execute(ExpectOneSegment{}
+            .with_no_flags()
+            .with_syn(true)
+            .with_seqno(tx_isn)
+            .with_payload_size(0));
+    TCP_LOG("--- in_syn_sent: local actively send a SYN");
     return h;
 }
 
@@ -216,7 +227,13 @@ TCPTestHarness TCPTestHarness::in_established(const TCPConfig &cfg,
     // It has sent a SYN with nothing else, and that SYN has been consumed
     // We reply with ACK and SYN.
     h.send_syn(rx_isn, tx_isn + 1);
-    h.execute(ExpectOneSegment{}.with_no_flags().with_ack(true).with_ackno(rx_isn + 1).with_payload_size(0));
+    h.execute(ExpectOneSegment{}
+            .with_no_flags()
+            .with_ack(true)
+            .with_ackno(rx_isn + 1)
+            .with_payload_size(0));
+
+    TCP_LOG("--- in_established: local received remote SYN & ACK and reply ACK");
     return h;
 }
 
@@ -226,12 +243,19 @@ TCPTestHarness TCPTestHarness::in_established(const TCPConfig &cfg,
 //!            seqno for the SYN.
 //! \param[in] rx_isn is the ISN of the FSM's inbound sequence. i.e. the
 //!            seqno for the SYN.
+// 对方主动发送 fin
 TCPTestHarness TCPTestHarness::in_close_wait(const TCPConfig &cfg,
                                              const WrappingInt32 tx_isn,
                                              const WrappingInt32 rx_isn) {
     TCPTestHarness h = in_established(cfg, tx_isn, rx_isn);
+    TCP_LOG("remote 第一次挥手");
     h.send_fin(rx_isn + 1, tx_isn + 1);
-    h.execute(ExpectOneSegment{}.with_no_flags().with_ack(true).with_ackno(rx_isn + 2));
+    TCP_LOG("local 第二次挥手");
+    h.execute(ExpectOneSegment{}
+            .with_no_flags()
+            .with_ack(true)
+            .with_ackno(rx_isn + 2));
+    TCP_LOG("--- in_close_wait: local reply to remote's FIN");
     return h;
 }
 
@@ -241,13 +265,21 @@ TCPTestHarness TCPTestHarness::in_close_wait(const TCPConfig &cfg,
 //!            seqno for the SYN.
 //! \param[in] rx_isn is the ISN of the FSM's inbound sequence. i.e. the
 //!            seqno for the SYN.
+// 我方 ack 对方的主动 fin
 TCPTestHarness TCPTestHarness::in_last_ack(const TCPConfig &cfg,
                                            const WrappingInt32 tx_isn,
                                            const WrappingInt32 rx_isn) {
     TCPTestHarness h = in_close_wait(cfg, tx_isn, rx_isn);
     h.execute(Close{});
+    TCP_LOG("local 第三次挥手");
     h.execute(
-        ExpectOneSegment{}.with_no_flags().with_fin(true).with_ack(true).with_seqno(tx_isn + 1).with_ackno(rx_isn + 2));
+        ExpectOneSegment{}
+        .with_no_flags()
+        .with_fin(true)
+        .with_ack(true)
+        .with_seqno(tx_isn + 1)
+        .with_ackno(rx_isn + 2));
+    TCP_LOG("--- in_last_ack: local send FIN and waiting for the ACK");
     return h;
 }
 
@@ -258,13 +290,20 @@ TCPTestHarness TCPTestHarness::in_last_ack(const TCPConfig &cfg,
 //!            seqno for the SYN.
 //! \param[in] rx_isn is the ISN of the FSM's inbound sequence. i.e. the
 //!            seqno for the SYN.
+// 我方主动发送 fin，等待对方 ack
 TCPTestHarness TCPTestHarness::in_fin_wait_1(const TCPConfig &cfg,
                                              const WrappingInt32 tx_isn,
                                              const WrappingInt32 rx_isn) {
     TCPTestHarness h = in_established(cfg, tx_isn, rx_isn);
     h.execute(Close{});
     h.execute(
-        ExpectOneSegment{}.with_no_flags().with_fin(true).with_ack(true).with_ackno(rx_isn + 1).with_seqno(tx_isn + 1));
+        ExpectOneSegment{}
+        .with_no_flags()
+        .with_fin(true)
+        .with_ack(true)
+        .with_ackno(rx_isn + 1)
+        .with_seqno(tx_isn + 1));
+    TCP_LOG("--- in_fin_wait_1: local send FIN");
     return h;
 }
 
@@ -275,6 +314,7 @@ TCPTestHarness TCPTestHarness::in_fin_wait_1(const TCPConfig &cfg,
 //!            seqno for the SYN.
 //! \param[in] rx_isn is the ISN of the FSM's inbound sequence. i.e. the
 //!            seqno for the SYN.
+// 收到对方对我方 fin 的 ack
 TCPTestHarness TCPTestHarness::in_fin_wait_2(const TCPConfig &cfg,
                                              const WrappingInt32 tx_isn,
                                              const WrappingInt32 rx_isn) {
@@ -290,12 +330,17 @@ TCPTestHarness TCPTestHarness::in_fin_wait_2(const TCPConfig &cfg,
 //!            seqno for the SYN.
 //! \param[in] rx_isn is the ISN of the FSM's inbound sequence. i.e. the
 //!            seqno for the SYN.
+// 收到对方的 fin
 TCPTestHarness TCPTestHarness::in_closing(const TCPConfig &cfg,
                                           const WrappingInt32 tx_isn,
                                           const WrappingInt32 rx_isn) {
     TCPTestHarness h = in_fin_wait_1(cfg, tx_isn, rx_isn);
     h.send_fin(rx_isn + 1, tx_isn + 1);
-    h.execute(ExpectOneSegment{}.with_no_flags().with_ack(true).with_ackno(rx_isn + 2));
+    TCP_LOG("remote send fin and ack for syn");
+    h.execute(ExpectOneSegment{}
+            .with_no_flags()
+            .with_ack(true)
+            .with_ackno(rx_isn + 2));
     return h;
 }
 
@@ -306,11 +351,16 @@ TCPTestHarness TCPTestHarness::in_closing(const TCPConfig &cfg,
 //!            seqno for the SYN.
 //! \param[in] rx_isn is the ISN of the FSM's inbound sequence. i.e. the
 //!            seqno for the SYN.
+// 双方交换完了 fin 和相应的 ack
 TCPTestHarness TCPTestHarness::in_time_wait(const TCPConfig &cfg,
                                             const WrappingInt32 tx_isn,
                                             const WrappingInt32 rx_isn) {
     TCPTestHarness h = in_fin_wait_1(cfg, tx_isn, rx_isn);
     h.send_fin(rx_isn + 1, tx_isn + 2);
-    h.execute(ExpectOneSegment{}.with_no_flags().with_ack(true).with_ackno(rx_isn + 2));
+    h.execute(ExpectOneSegment{}
+            .with_no_flags()
+            .with_ack(true)
+            .with_ackno(rx_isn + 2));
+    TCP_LOG("--- in_time_wait: remote send FIN & ACK, local reply ACK");
     return h;
 }

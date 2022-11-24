@@ -14,12 +14,16 @@
 using namespace std;
 using State = TCPTestHarness::State;
 
+// 我方处于 Listen，被动接收他人连接邀请
+
 int main() {
     try {
         TCPConfig cfg{};
 
         // test #1: START -> LISTEN -> SYN -> SYN/ACK -> ACK
         {
+            TEST(1);
+
             TCPTestHarness test_1(cfg);
 
             // tell the FSM to connect, make sure we get a SYN
@@ -28,10 +32,15 @@ int main() {
             test_1.execute(Tick(1));
             test_1.execute(ExpectState{State::LISTEN});
 
+            // 对方主动发送 syn ---> 第一次握手
             test_1.send_syn(WrappingInt32{0}, {});
             test_1.execute(Tick(1));
 
-            TCPSegment seg = test_1.expect_seg(ExpectOneSegment{}.with_syn(true).with_ack(true).with_ackno(1),
+            // 我方 ack 对方 syn，并且携带 syn ---> 第二次握手
+            TCPSegment seg = test_1.expect_seg(ExpectOneSegment{}
+                                                .with_syn(true)
+                                                .with_ack(true)
+                                                .with_ackno(1),
                                                "test 1 failed: no SYN/ACK in response to SYN");
             test_1.execute(ExpectState{State::SYN_RCVD});
 
@@ -51,10 +60,13 @@ int main() {
                     ExpectOneSegment{}.with_no_flags().with_ack(true).with_ackno(1).with_seqno(seg.header().seqno + 1));
             */
 
+            // 对方 ack 我方 syn ---> 第三次握手
             test_1.send_ack(WrappingInt32{1}, seg.header().seqno + 1);
             test_1.execute(Tick(1));
             test_1.execute(ExpectNoSegment{}, "test 1 failed: no need to ACK an ACK");
             test_1.execute(ExpectState{State::ESTABLISHED});
+
+            OK(1);
         }
     } catch (const exception &e) {
         cerr << e.what() << endl;

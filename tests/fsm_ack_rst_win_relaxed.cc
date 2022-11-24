@@ -19,6 +19,8 @@ int main() {
 
         // test #1: in ESTABLISHED, send unacceptable segments and ACKs
         {
+            TEST(1);
+
             TCPTestHarness test_1 = TCPTestHarness::in_established(cfg, base_seq - 1, base_seq - 1);
 
             // acceptable ack---no response
@@ -67,6 +69,8 @@ int main() {
 
             test_1.send_rst(base_seq + 1);
             test_1.execute(ExpectState{State::RESET});
+            
+            OK(1);
         }
     } catch (const exception &e) {
         cerr << e.what() << endl;

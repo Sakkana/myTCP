@@ -39,6 +39,13 @@ void TCPReceiver::segment_received(const TCPSegment &seg) {
         this->ISN = seg_header.seqno;
     }
 
+    if (seg_header.fin) {
+        if (this->FIN) {
+            return;
+        }
+        this->FIN = true;
+    }
+
     // 期望报文本地序列号
     uint64_t checkpoint = this->_reassembler.stream_out().bytes_written() + 1;
 

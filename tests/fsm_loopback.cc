@@ -28,6 +28,8 @@ int main() {
 
         // loop segments back into the same FSM
         for (unsigned rep_no = 0; rep_no < NREPS; ++rep_no) {
+            TEST(rep_no + 1);
+
             const WrappingInt32 rx_offset(rd());
             TCPTestHarness test_1 = TCPTestHarness::in_established(cfg, rx_offset - 1, rx_offset - 1);
             test_1.send_ack(rx_offset, rx_offset, 65000);
@@ -73,6 +75,8 @@ int main() {
             }
 
             test_1.execute(ExpectData{}.with_data(d), "test 1 falied: got back the wrong data");
+
+            OK(rep_no + 1);
         }
     } catch (const exception &e) {
         cerr << e.what() << endl;

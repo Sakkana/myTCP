@@ -551,12 +551,15 @@ struct Tick : public TCPAction {
 
 struct Connect : public TCPAction {
     std::string description() const { return "connect"; }
-    void execute(TCPTestHarness &harness) const { harness._fsm.connect(); }
+    void execute(TCPTestHarness &harness) const { 
+        cout << "connect: send syn" << endl;
+        harness._fsm.connect();    
+    }
 };
 
 struct Listen : public TCPAction {
     std::string description() const { return "listen"; }
-    void execute(TCPTestHarness &) const {}
+    void execute(TCPTestHarness &) const { cout << "--- in listen" << endl; }
 };
 
 struct Close : public TCPAction {

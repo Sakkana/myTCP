@@ -32,17 +32,23 @@ int main() {
 
         // test 1: listen -> established -> check advertised winsize -> check sent bytes before ACK
         for (unsigned rep_no = 0; rep_no < NREPS; ++rep_no) {
+            TEST(rep_no + 1);
+
             cfg.recv_capacity = 2048 + (rd() % 32768);
             const WrappingInt32 seq_base(rd());
             TCPTestHarness test_1(cfg);
 
             // connect
+            // local 处于监听状态
             test_1.execute(Listen{});
-            test_1.send_syn(seq_base);
 
-            TCPSegment seg = test_1.expect_seg(
-                ExpectOneSegment{}.with_ack(true).with_ackno(seq_base + 1).with_win(cfg.recv_capacity),
-                "test 1 failed: SYN/ACK invalid");
+            // remote 发送 syn
+            test_1.send_syn(seq_base);
+            TCPSegment seg = test_1.expect_seg(ExpectOneSegment{}
+                                                .with_ack(true)
+                                                .with_ackno(seq_base + 1)
+                                                .with_win(cfg.recv_capacity)
+                                                , "test 1 failed: SYN/ACK invalid");
             auto &seg_hdr = seg.header();
 
             const WrappingInt32 ack_base = seg_hdr.seqno;
@@ -84,9 +90,16 @@ int main() {
                 // NOTE that we don't override send window here because cfg should have been updated
                 test_1.send_ack(seq_base + 1, ack_base + 1 + bytes_total, swin);
                 test_1.execute(Tick(1));
+
+                OK(rep_no + 1);
             }
+
+            TEST("RESULT");
+
             test_1.execute(ExpectBytesInFlight{0}, "test 1 failed: after acking, bytes still in flight?");
             test_err_if(!equal(d.cbegin(), d.cend(), d_out.cbegin()), "test 1 failed: data mismatch");
+
+            OK("RESULT");
         }
     } catch (const exception &e) {
         cerr << e.what() << endl;

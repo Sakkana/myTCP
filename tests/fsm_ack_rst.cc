@@ -70,43 +70,59 @@ int main() {
             cerr << "Test 1" << endl;
             TCPTestHarness test_1 = TCPTestHarness::in_established(cfg, base_seq - 1, base_seq - 1);
 
-            // acceptable ack---no response
-            test_1.send_ack(base_seq, base_seq);
+            // 三次握手结束
 
+            // acceptable ack---no response
+            // 对方重复 ack，不回应
+            TCP_LOG(1.1);
+            test_1.send_ack(base_seq, base_seq);
             test_1.execute(ExpectNoSegment{}, "test 1 failed: ACK after acceptable ACK");
 
             // ack in the past---no response
+            // 旧报文 ack，不回应
+            TCP_LOG(1.2);
             test_1.send_ack(base_seq, base_seq - 1);
-
             test_1.execute(ExpectNoSegment{}, "test 1 failed: ACK after past ACK");
 
             // ack in the future---should get ACK back
+            // 未发送序号 ack，不回应
+            TCP_LOG(1.3);
             test_1.send_ack(base_seq, base_seq + 1);
-
-            test_1.execute(ExpectOneSegment{}.with_ack(true).with_ackno(base_seq), "test 1 failed: bad ACK");
+            test_1.execute(ExpectOneSegment{}
+                            .with_ack(true)
+                            .with_ackno(base_seq)
+                            , "test 1 failed: bad ACK");
 
             // segment out of the window---should get an ACK
+            // remote 发送一个字节，local 回复 ack
+            TCP_LOG(1.4);
             test_1.send_byte(base_seq - 1, base_seq, 1);
-
             test_1.execute(ExpectUnassembledBytes{0}, "test 1 failed: seg queued on early seqno");
-
-            test_1.execute(ExpectOneSegment{}.with_ack(true).with_ackno(base_seq), "test 1 failed: bad ACK");
+            test_1.execute(ExpectOneSegment{}
+                            .with_ack(true)
+                            .with_ackno(base_seq)
+                            , "test 1 failed: bad ACK");
 
             // segment out of the window---should get an ACK
+            TCP_LOG(1.5);
             test_1.send_byte(base_seq + cfg.recv_capacity, base_seq, 1);
-
             test_1.execute(ExpectUnassembledBytes{0}, "test 1 failed: seg queued on late seqno");
-            test_1.execute(ExpectOneSegment{}.with_ack(true).with_ackno(base_seq),
-                           "test 1 failed: bad ACK on late seqno");
+            test_1.execute(ExpectOneSegment{}
+                            .with_ack(true)
+                            .with_ackno(base_seq)
+                            , "test 1 failed: bad ACK on late seqno");
 
             // packet next byte in the window - ack should advance and data should be readable
+            TCP_LOG(1.6);
             test_1.send_byte(base_seq, base_seq, 1);
-
             test_1.execute(ExpectData{}, "test 1 failed: pkt not processed on next seqno");
-
-            test_1.execute(ExpectOneSegment{}.with_ack(true).with_ackno(base_seq + 1), "test 1 failed: bad ACK");
+            test_1.execute(ExpectOneSegment{}
+                            .with_ack(true)
+                            .with_ackno(base_seq + 1)
+                            , "test 1 failed: bad ACK");
 
             // segment not in window with RST set --- should get nothing back
+            TCP_LOG(1.7);
             test_1.send_rst(base_seq);
             test_1.send_rst(base_seq + cfg.recv_capacity + 1);
             test_1.execute(ExpectNoSegment{}, "test 1 failed: got a response to an out-of-window RST");

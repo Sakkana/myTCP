@@ -28,6 +28,8 @@ int main() {
 
         // loop segments back in a different order
         for (unsigned rep_no = 0; rep_no < NREPS; ++rep_no) {
+            TEST(rep_no + 1);
+
             const WrappingInt32 rx_offset(rd());
             TCPTestHarness test_2 = TCPTestHarness::in_established(cfg, rx_offset - 1, rx_offset - 1);
             test_2.send_ack(rx_offset, rx_offset, 65000);
@@ -70,6 +72,8 @@ int main() {
             test_2.execute(ExpectNoSegment{}, "test 2 failed: ACK for ACK?");
 
             test_2.execute(ExpectData{}.with_data(d), "test 2 failed: wrong data after loopback");
+
+            OK(rep_no + 1);
         }
     } catch (const exception &e) {
         cerr << e.what() << endl;

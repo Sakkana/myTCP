@@ -13,12 +13,17 @@
 using namespace std;
 using State = TCPTestHarness::State;
 
+
 int main() {
     try {
         TCPConfig cfg{};
 
         // test #1: start in TIME_WAIT, timeout
         {
+            TEST(1);
+
+            cout << "Test active close" << endl;
+
             TCPTestHarness test_1 = TCPTestHarness::in_time_wait(cfg);
 
             test_1.execute(Tick(10 * cfg.rt_timeout - 1));
@@ -32,16 +37,22 @@ int main() {
             test_1.execute(Tick(10 * cfg.rt_timeout));
 
             test_1.execute(ExpectState{State::CLOSED});
+
+            OK(1);
         }
 
         // test #2: start in CLOSING, send ack, time out
         {
+            TEST(2);
+
             TCPTestHarness test_2 = TCPTestHarness::in_closing(cfg);
 
             test_2.execute(Tick(4 * cfg.rt_timeout));
-            test_2.execute(ExpectOneSegment{}.with_fin(true));
+            test_2.execute(ExpectOneSegment{}
+                            .with_fin(true));
 
             test_2.execute(ExpectState{State::CLOSING});
+
             test_2.send_ack(WrappingInt32{2}, WrappingInt32{2});
             test_2.execute(ExpectNoSegment{});
 
@@ -54,10 +65,14 @@ int main() {
             test_2.execute(Tick(2));
 
             test_2.execute(ExpectState{State::CLOSED});
+
+            OK(2);
         }
 
         // test #3: start in FIN_WAIT_2, send FIN, time out
         {
+            TEST(3);
+
             TCPTestHarness test_3 = TCPTestHarness::in_fin_wait_2(cfg);
 
             test_3.execute(Tick(4 * cfg.rt_timeout));
@@ -77,10 +92,14 @@ int main() {
             test_3.execute(Tick(10 * cfg.rt_timeout));
 
             test_3.execute(ExpectState{State::CLOSED});
+
+            OK(3);
         }
 
         // test #4: start in FIN_WAIT_1, ack, FIN, time out
         {
+            TEST(4);
+
             TCPTestHarness test_4 = TCPTestHarness::in_fin_wait_1(cfg);
 
             // Expect retransmission of FIN
@@ -102,10 +121,14 @@ int main() {
             test_4.execute(Tick(10 * cfg.rt_timeout));
 
             test_4.execute(ExpectState{State::CLOSED});
+
+            OK(4);
         }
 
         // test 5: start in FIN_WAIT_1, ack, FIN, FIN again, time out
         {
+            TEST(5);
+
             TCPTestHarness test_5 = TCPTestHarness::in_fin_wait_1(cfg);
 
             // ACK the FIN
@@ -145,10 +168,14 @@ int main() {
 
             test_5.execute(Tick(10));
             test_5.execute(ExpectState{State::CLOSED});
+
+            OK(5);
         }
 
         // test 6: start in ESTABLISHED, get FIN, get FIN re-tx, send FIN, get ACK, send ACK, time out
         {
+            TEST(6);
+
             TCPTestHarness test_6 = TCPTestHarness::in_established(cfg);
 
             test_6.execute(Close{});
@@ -187,6 +214,8 @@ int main() {
             test_6.execute(Tick(10 * cfg.rt_timeout));
 
             test_6.execute(ExpectState{State::CLOSED});
+
+            OK(6);
         }
     } catch (const exception &e) {
         cerr << e.what() << endl;
