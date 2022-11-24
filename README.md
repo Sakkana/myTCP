@@ -1,3 +1,19 @@
+Finish lab0 - lab4 in 2 months.
+
+2022.08 tail\
+**lab0** networking warmup\
+**lab1** stitching substrings into a byte stream
+
+2022.09 head\
+**lab2** the TCP receiver
+
+2022.11 tail\
+**lab3** the TCP sender\
+**lab4** the TCP connection
+
+Following is the origin README for this project.
+
+---
 For build prereqs, see [the CS144 VM setup instructions](https://web.stanford.edu/class/cs144/vm_howto).
 
 ## Sponge quickstart
